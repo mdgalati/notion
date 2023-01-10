@@ -1,42 +1,28 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Random Image from Pinterest</title>
-</head>
-<body>
-  <button id="show-random-image-button">Show Random Image</button>
-  <script>
-    const boardUrl = 'https://pin.it/7ju5fG6';
-
-    const showRandomImageButton = document.getElementById("show-random-image-button");
-
-    showRandomImageButton.addEventListener("click",()=>{
-      // Create an iFrame to display the Pinterest board
-      const iframe = document.createElement('iframe');
-      iframe.src = boardUrl;
-      iframe.width = '100%';
-      iframe.height = '450';
-
-      // Get the iFrame's content (the Pinterest board)
-      iframe.onload = () => {
-        const content = iframe.contentDocument || iframe.contentWindow.document;
-        // Get all image elements from the board
-        const images = content.getElementsByTagName('img');
-        // Create an array to store the URLs
-        const urls = [];
-        // Iterate through the images and push their URLs to the array
-        for (let i = 0; i < images.length; i++) {
-            urls.push(images[i].getAttribute('src'));
-        }
-                // Generate a random index between 0 and the number of URLs
-        const index = Math.floor(Math.random() * urls.length);
-        // Get the URL at the random index
-        const randomUrl = urls[index];
-        // Open the random image in a new window
-        window.open(randomUrl);
-      }
-    });
-  </script>
-</body>
+  <head>
+    <title>Pinterest API Example</title>
+  </head>
+  <body>
+    <script>
+      //Make GET request to the Pinterest API
+      fetch(`https://api.pinterest.com/v1/boards/mdgalatiphd/manifesting/pins/?access_token=pina_AMATBIQWAAAAYAQAGDACEDBAUF7J3BIBQBIQCANNGS6S36RAXRW5AZIAEMQT6AQM7QGE7PWFIMM6URNX5IPXZKB42WBRLMYA`)
+        .then(response => response.json())
+        .then(data => {
+            // Extract images urls
+            var images = data.data.map(function(d) {
+                return d.url;
+            });
+            // generate a random index
+            var rnd_index = Math.floor(Math.random() * images.length);
+            // use the random url
+            var random_image_url = images[rnd_index];
+            // Create image element
+            var img = document.createElement("img");
+            img.src = random_image_url;
+            // Append to the body
+            document.body.appendChild(img);
+        });
+    </script>
+  </body>
 </html>
-
