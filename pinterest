@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Random Image from Pinterest</title>
+</head>
+<body>
+  <button id="show-random-image-button">Show Random Image</button>
+  <script>
+    const boardUrl = 'https://pin.it/7ju5fG6';
+
+    const showRandomImageButton = document.getElementById("show-random-image-button");
+
+    showRandomImageButton.addEventListener("click",()=>{
+      // Create an iFrame to display the Pinterest board
+      const iframe = document.createElement('iframe');
+      iframe.src = boardUrl;
+      iframe.width = '100%';
+      iframe.height = '450';
+
+      // Get the iFrame's content (the Pinterest board)
+      iframe.onload = () => {
+        const content = iframe.contentDocument || iframe.contentWindow.document;
+        // Get all image elements from the board
+        const images = content.getElementsByTagName('img');
+        // Create an array to store the URLs
+        const urls = [];
+        // Iterate through the images and push their URLs to the array
+        for (let i = 0; i < images.length; i++) {
+            urls.push(images[i].getAttribute('src'));
+        }
+                // Generate a random index between 0 and the number of URLs
+        const index = Math.floor(Math.random() * urls.length);
+        // Get the URL at the random index
+        const randomUrl = urls[index];
+        // Open the random image in a new window
+        window.open(randomUrl);
+      }
+    });
+  </script>
+</body>
+</html>
